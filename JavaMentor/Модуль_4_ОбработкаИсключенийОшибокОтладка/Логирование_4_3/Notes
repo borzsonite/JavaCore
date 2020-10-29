@@ -1,0 +1,293 @@
+1. Работа с логированием происходить через класс java.util.logging.Logger
+
+2. Каждая запись лога содержит дату-время, уровень события, сообщение
+
+3. Есть несколько уровней события основные это INFO, DEBUG, ERROR
+
+4. Для использования файла конфигурации необходимо использовать logManager: LogManager.getLogManager().readConfiguration();
+
+5. Данные логирования собираются в LogRecord, который передаются в Handler.
+
+6. Handler определяет, что делать дальше с LogRecord, например данные лога могут быть записаны в файл или выведены в консоль, или отправлены по сети итд.
+
+7. И Logger и Hanlder могут пропускать записи логов через фильтр
+7.1 Какой компонент проходят записи прежде чем попасть в Logger, Handler?
+
+8. Handler также может использовать Formatter, чтобы определить в каком виде записывать данные
+8.1 Какой компонент определяет вид выходных данных в логе?
+
+9. У каждой записи в логе есть уровень важности, в зависимости от установленного уровня важности логи передаются в Handler либо нет.
+9.1 От чего еще зависит передача логов в Handler?
+
+10. Наиболее частое использование логирования, это создание сущности Loggera в классе для которого необходимо вести логирование.
+10. Что необходимо сделать для логирования в определенном объекте?
+
+11. Как правило сущность класса Logger делается static final
+
+12. Уровень логирования может задаваться как в конфигурационном файле, так и через метод Logger.setLevel(). Изменение уровня логирования, также окажет эффект на на потомков объкта для которого изменялся уровень логирования.
+
+13. Инициализировать логер можно 2мя способами: Logger logger = Logger.getLogger("newLogger"); или Logger logger = Logger.getLogger(ClassName.class.getName()); Второй вариант более предпочтительный в нем логеру дается наименование по полному имени класса.
+
+14. Добавление Handler'a: logger.addHandler(new ConsoleHandler());
+
+15. Получение Handler'oв: Handler[] handlers = logger.getHandlers();
+
+16. Удаление Handler'a: Handler handler = new ConsoleHandler(); logger.addHandler(handler); logger.removeHandler(handler);
+
+17. Установка фильтра: Filter filter = new MyFilterImp(), где MyFilterImp - реализация интерфейса Filter
+ logger.setFilter(filter);
+
+18. Получение фильтра у логера: Filter filter = logger.getFilter();
+
+19. Установление уровня логирования: logger.setLevel(Level.INFO);
+
+20. Узнать уровень логирования: logger.getLevel();
+
+21. При создании логера в метод .getLogger() передается имя логера: Logger logger = Logger.getLogger("com.name.ClassName");
+
+22. В имени логера, черзе точку (.) задается иерархия: самый верхний корневой (root) уровень имеет пустую строку "", затем уровень com, затем com.name, затем com.name.ClassName
+
+23. Если создается логер с именем com.name.ClassName, уровней " ", com, com.name не существует, чтоб обратиться, например к com.name, как к родителю com.name.ClassName через logger.getParent(), нужно сначал создать этот логер: Logger logger2 = Logger.getLogger("com.name")
+
+24. Если у логгера установле Filter, то сначала сообщение должено пройти Filter, если Filter пройден, то сообщение передается дальше в Handler.
+
+25. Если сообщение прошло фильтр оно также, передается в Handler логера родителя.
+
+26. Для каждого логера может быть установлен собственный уровень важности принимаемых сообщений. Все сообщения ниже этого уровня будут игнорироваться. Например если установлен уровнеь WARNING, то сообщения уровня INFO будут логером игнорироваться. Также не будут передаваться выше по иерархии сообщения ниже установленного уровня.
+
+27. Уровень логгирования можно задать через метод .log(): logger.log(Level.SEVERE, "Severe message!". Также можно изменять уровень логирования следующим образом: logger.setLevel(Level.WARNING) // при таком уровне, логером будут игнорироваться все сообщения ниже уровня WARNING (INFO, CONFIG, FINE etc.)
+
+28. Для фомратирования записи перед ее записью в файл или консоль, Handler'om используется Formater.
+
+29. Существует два вида (подкласса) Formater'a: SimpleFormatter and XMLFormatter
+
+30. Разные Hanlder's по дефолту используют разные виды Formater'ov
+
+31. Можно создавать собственные Formater's наследуясь от класса Formatter:
+    public class MyFormatter extends Formatter {
+       @Override
+        public String format(LogRecord record) {
+            return record.getLevel() + ":" + record.getMessage();
+        }
+    }
+
+32. Строка возвращаемая методом .format() это то, что передастся Handler'om в файл или консоль.
+
+33. Пример применения фильтра:
+    Filter filter = new MyFilter();
+    logger.setFilter(filter);
+
+34. Создание собственного фильтра включает в себя имплиментацию интерфейса Filter, например:
+
+    public class MyFilter implements Filter {
+        public boolean isLoggable(LogRecord record) {
+            return false; // это очень простая имплиментация. В этом методе обычно делается какой-то анализ record
+        }
+    }
+
+35. Handler это компонент отвечающий за передачу логов из логера во вне (файл, консоль, сеть, память)
+
+36. Если сообщение не было отфильтровано или обрезано уровнем важности оно из логера попадает в Handler
+
+37. Пример добавления Handler'a в логгер. logger.addHandler(new ConsoleHandler);
+
+38. Для форматирования логов перед их передачей во вне (файл, консоль итд) Handler's используют Formater's
+
+39. Пример установки Formater для Handler:
+    ConsoleHandler handler = new ConsoleHandler();
+    handler.setFormatter(new SimpleFormatter()); // установка SimpleFormatter
+    Formatter formatter = handler.getFormatter(); // получение Formatter'a
+
+40. Существуют встроенные Handler's: ConsoleHandler, FileHandler, StreamHandler, SocketHandler, MemoryHandler
+
+41. Для некоторых встроенных Handler's форматеры могут быть заданы через конфигурационный файл
+
+42. ConsoleHandler handler = new ConsoleHandler(); По дефолту ConsoleHandler испльзует SimpleFormatter
+
+43. FileHandler записывает логи в файл, по дефолту использует XMLFormatter
+
+44. FileHandler имеет 4 вида конструкторов:
+    - FileHandler handler = new FileHandler(); // дефолтный FileHandler, его настройка полностью проводится через конфигурационный файл;
+    - FileHandler handler = new FileHandler(String pattern); // pattern - образец для имени файла лога
+      Пример: FileHandler handler = new FileHandler("myapp-log.%u.%g.txt");
+
+    - FileHandler handler = new FileHandler(String pattern, boolean append); // тоже что и выше + дозапись в файл
+      Пример: FileHandler handler = new FileHandler("myapp-log.%u.%g.txt", true);
+
+    - FileHandler handler = new FileHandler(String pattern, int limit, int count); // limit - размер файлов логов, count - количество файлов. По достижении count'a запись начинается сначала, файлы перезаписываются.
+      Пример: FileHandler handler = new FileHandler("myapp-log.%u.%g.txt", 1024 * 1024, 10);
+
+    - FileHandler handler = new FileHandler(String pattern, int limit, int count, boolean append); // то же, что и выше + дозапись в файл
+      Пример: FileHandler handler = new FileHandler("myapp-log.%u.%g.txt", 1024 * 1024, 10, true);
+
+45. Значения pattern может принимать следующие значения:
+   /  разделитель имен файлов в системе (обычно / или \)
+   %t временная директория
+   %h домащняя директория
+   %g нумерация log-файла например log%g.txt ->log0.txt, log1.txt итд.
+   %u нумерация лог-файла,например log%u.%g.txt ->log0.0.txt, log0.0.txt etc..
+
+46. StreamHandler записывает логи в OutputStream, в качестве OutputStream выступает, например FileOutputStream.
+46.1 Куда записывает логи StreamHandler?
+
+47. OutPutStream задается при помощи метода .setOutputStream()
+
+48. Примеры создания StreamHandler:
+    StreamHandler handler = new StreamHandler(); // при испльзовании такого конструктора, необходимо предварительно создать OutputStream
+    StreamHandler handler = new StreamHandler(outputStream, formatter); // параметр outputStream - это outputStream, который был задан или получен от другого объекта например этом может быть экземпляр FileOutputStream. Formater - может использоваться либо дефолтный, либо кастомный (по умолчанию если параметр не указан используется SimpleFormatter)
+
+49. SocketHandler - записывает логи по определенному сетевому адресу через сокеты, пример:
+    SocketHandler socketHandler = new SocketHandler(host, port)
+    SocketHandler socketHandler = new SocketHandler("jenkov.com", 80);
+
+50. MemoryHandler изначально записывает логи в буфер, при заполнении буфера он перезаписывается новыми записями. При наступлении определенного события (триггера) данные из буфера перенаправляются в targetHandler, который в свою очередь записывает логи во вне (файл, консоль итд). Также для принудительного перенаправления логов из буфера в TargetHandler может использоваться метод .push()
+
+
+51. Примеры:
+    MemoryHandler handler = MemoryHandler(); // создает Handler, который использует настройки из конфигурационного файла;
+    MemoryHandler handler = MemoryHandler(targetHandler, bufferSize, pushLevel);
+    MemoryHandler handler = MemoryHandler(targetHandler, 10, Level.WARNING); //
+
+52. Класс LogRecord служит оберткой для сообщений передаваемых в логер. Можно непосредственно передать LogRecord в логгер, or have the Logger wrap what is logged in a LogRecord (или логгер сам оборачивает в LoggerRecord запись которая была в него передана).
+
+53. После того как LogRecord было передано в фильтр (если назначен), handler, в родительский логер
+
+53. У класса LogRecord существует несколько get и set методов, таких как:  getLevel(), getLoggerName(), getMessage(), getMillis(), getParameters(), getResourceBundle(), getResourceBundleName(), getSequenceNumber(), getSourceClassName(), getSourceMethodName(), getThreadID(), getThrown()
+
+54. Логирование может быть настроено двумя путями: 1. Конфигурационным классом, 2. Конфигурационным файлом.
+
+55. Конфигурирование инициализируется при помомщи объекта класса LogManager.
+
+56. Если конфигурационный класс не задан, конфигурирование можно провести с помощью конфигурациооного файла. По дефолту он находится в директории lib/logging.properties
+
+57. Обычно путь до конфигурационного файла указывается в опциях JVM
+
+58. Пример конфигурационного файла:
+handlers=java.util.logging.FileHandler,java.util.logging.ConsoleHandler
+java.util.logging.FileHandler.level=FINEST
+java.util.logging.FileHandler.formatter=java.util.logging.SimpleFormatter
+java.util.logging.FileHandler.encoding=UTF-8
+java.util.logging.FileHandler.limit=10000000
+java.util.logging.FileHandler.pattern=/Users/aberrate/YandexDisk/java/src/Theory/Logging/Sandbox
+java.util.logging.ConsoleHandler.level=FINEST
+
+59. LogManager управляет внутренней иерархией логирования и задает конфигурацию либо через класс либо через конфигурационный файл.
+
+60. LogManager может быть использовани например, для перезагрузки конфигурации: LogManager manager = LogManager.getLogManager(); manager.readConfiguration();
+
+61. С помощью классов пакета java.util.logging.* можно:
+    - выполнять точечную настройку логирования на уровне пакета или класса;
+    - настраивать уровень детальности логирования;
+    - настраивать место куда логи будут записоваться;
+    - настраивать формат в котором будут вестись логи.
+
+62. Для добавления в логи динамической информации используется следующая конструкция:
+    logger.log(Level.WARNING, "My first logo {0}", "P1"); // добавление единиченого параметра
+    logger.log(Level.SEVERE, "Hello logging: {0}, {1}", new Object[] {"P1", "P2"}); //добавление группы параметров
+
+63. Для получения в логе распечатки StackTrace в логер необходимо передать третьим параметром исключение (е)
+    logger.log(Level.WARNING, "My first logo, e)
+
+64. По умолчанию все логи выводятся в консоль через ConsoleHandler, но если конфигурация переопределяется в кастомном конфигурационном файле все настройки по умолчанию удаляются и такие значения, например, как Handler нужно указывать явно в конфигурационном файле
+
+65. Иерархия сообщений: SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST
+
+66. Объекту Logger могут назначаться Handlers.
+
+67. И Logger и Handler могут использовать Filter
+
+68. Все уровни логирования SEVERE, WARNING etc.. являются static final полями класса Level
+
+69. Уровень ALL включает логирование на всех уровнях, OFF - выключает логирование
+
+70. Если в логах нужно получить распечатку stacktrace, в метод .log() третьим параметром передаются исключение, например:
+    LOGGER.log(Level.SEVERE, "This is an Exception", e);
+
+
+
+////////////////////////////////////////////ВОПРОСЫ////////////////////////////////////////////
+1. Через какой пакет/класс ведется логгирование в java?
+2. Что содержит каждая запись лога?
+3. Какие уровни событий существуют в JUL?
+4. Что необходимо, чтобы задействовать в классе файл конфигурации?
+5. Где собираются и куда передаются записи логирования?
+6. Какой компонент определяет что делать дальше с записями LogRecord?
+7. Какой компонент проходят записи прежде чем попасть в Logger, Handler?
+8. Какой компонент определяет вид выходных данных в логе?
+9. От чего еще зависит передача логов в Handler?
+10. Что необходимо сделать для логирования в определенном объекте?
+11. Какие модификаторы, как правило, задаются для экземпляра логера?
+12. Какие способы задания уровня логирования существуют?
+13. Какие существуют способы инициализации логера?
+14. Какой синтаксис у команды добавления Handler'a?
+15. Какой синтаксис у команды плоучения Handler'a?
+16. Какой синтаксис у команды удаления Handler'a?
+17. Какой синтаксис у команды установки фильтра?
+18. Какой синтаксис у команды получения фильтра у логера?
+
+19. Какой синтаксис у команды задания уровня логирования в логере?
+20. Какой синтаксис у команды получения уровня логирования в логере?
+21. Что передается в метод getLogger("???") при создании логгера
+22. Как задается иерархия в логере?
+23.Что будет если в логере com.name.ClassName обратиться к родителю, logger.getParent()? Что нужно сделать чтобы обратиться к логу com.name через logger.getParent()?
+24. Что происходит если у логера установлен фильтр?
+25. Куда еще помимо передается запись лога если она прошла через фильтр?
+26. Что может быть установленно для каждого логгера? Будут ли передаваться вверх по иерархии сообщения уровня ИНФО, если для логера установлен уровень WARNING?
+27. Через какой метод можно задать уровень логгирования, какие у него параметры?
+28. Что используется для форматирования вида записи перед ее записью в консоль или файл?
+29. Какие подклассы сущетвуют у класса Formatter?
+30. Какие виды Formatter используются по дефолту Handleram'i?
+!!!31. Как можно задать собственный Formatter?
+!!!32. Что возвращает метод .format()?
+33. Какой синтаксис у команд применения фильтра
+34. Как создать собственный фильтра, что должен имплементровать кастомный фильтр? Что принимает в качестве параметра метод isLoggable?
+35. За что отвечает Handler?
+36. Куда попадает сообщение из логера, при каких обстоятельствах оно туда не попадет?
+37. Синтаксис добавления Handler'a в логгер.
+38. Для чего используется Formatter?
+39. Синтаксис установки Formatter для Handler и синтаксис получения Formatter?
+40. Сколько видов Handler существует и каких?
+41. Что может быть заданы для некоторых Handler через конфигурационный файл?
+42. Какой синтаксис для инициализации ConsoleHandler, какой Formatter используется им по дефолту?
+43. Какой Formatter по дефолту использует FileHandler?
+44. Сколько видов конструкторов имеет FileHandler, какие они принимают параметры?
+45. Какие значения принимает параметр pattern в конструкторе FileHandler?
+46. Куда записывает логи StreamHandler?
+47. При помощи какого метода задаются OutputStream?
+48. Синтаксис создания StreamHandler, какие конструкторы у этого класса? Что у них может быть в параметрах?
+49. Куда записывает логи SocketHandler, какой конструктор у этого класса? Что у него в параметрах?
+50. Куда записывает логи MemoryHandler, каковы особенности этой  записи? Для чего используется  метод .push()?
+51. Какие параметры принемает конструктор MemoryHandler?
+52. Для чего нужен LogRecord?
+53. Куда передается LogRecord из логера?
+53. Какие методы имеются у класса LogRecord?
+54. Через что можно настраивать логиррование?
+55. С помощью объекта какого класса инициализируется конфиргурирование?
+56. С помощью чего можно задать конфигурацию, если не задан конфигурационный класс7
+57. Где указывают путь к конфигурационному классу?
+58. Пример конфигурационного файла:
+handlers=java.util.logging.FileHandler,java.util.logging.ConsoleHandler
+java.util.logging.FileHandler.level=FINEST
+java.util.logging.FileHandler.formatter=java.util.logging.SimpleFormatter
+java.util.logging.FileHandler.encoding=UTF-8
+java.util.logging.FileHandler.limit=10000000
+java.util.logging.FileHandler.pattern=/Users/aberrate/YandexDisk/java/src/Theory/Logging/Sandbox
+java.util.logging.ConsoleHandler.level=FINEST
+59. Чем управляет экземпляр класса LogManager, и что он задает?
+60. Дл чего еще может быть использован LogManager
+61. Что можно сделать
+
+
+
+
+/////////////////НЕ ДОГНАЛ/////////////////
+ 1. Подскажите, записи
+  logger3.log(Level.SEVERE, "It's SEVERE!");
+  и
+  logger3.severe("It's SEVERE!");
+  равнозначны?
+
+ 2. Установка уровня важности сообщений через конфигурационный файл и через logger.setLevel(Level.INFO)
+ 3. Как связанны между собой Logger и LogRecord?
+ 4. Как перевести The Logger object is allocated with a LogRecord object which stores the message to be logged.
+ 5. Для чего задавать уровень логирования отдельно на уровне логера и на уровне хэндлера, если задать уровень для логера и не задать его для хэндлера, то хэндлер будет наследовать уровень от логера?

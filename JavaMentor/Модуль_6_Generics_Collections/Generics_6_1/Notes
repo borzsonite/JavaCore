@@ -1,0 +1,83 @@
+1. Дженерики позволяют классу работать с неизвестными ему на этапе компиляции даныными, т.е.:
+
+class Account <T>{
+    private T id;
+    private int sum;
+
+    Account(T id, int sum){
+        this.id = id;
+        this.sum = sum;
+    }
+}
+при создании объекта класса Account в конструктор в качестве id может быть переданно значение любого типа (int, String, SomeClass etc..), например:
+Account acc = new Account(1, 500); // id - int
+или Account acc2 = new Account("sid15", 1000) // id - String
+
+2. Ограничения использования дженериков: внутри параметризованного класса нельзя создать объект и сослать его на переменную типа T, те.
+class Account <T>{
+    private T id;
+    private int sum;
+
+    T newId = new T() // так нельзя
+}
+
+3. Дженерики необходимы чтобы компилятор на стадии компиляции мого проверить соответствие типа.
+
+4. В рантайм вся дженерик информация стирается т.е.
+        List rawList = new ArrayList();
+        List<String> list = new ArrayList<>(); // строка 1
+        rawList = list;
+        rawList.add(8); // ошибки не будет тк. в райнтайм инфо о дженирализации из строки 1 сотрется.
+
+5. Дженерик метод выглядит примерно так:
+
+   static <T> T genericMethod(T t) {
+       String res = t + " from gen";
+        return (T)res;
+    }
+
+6. У дженерик класса может быть дженерик метод с другими параметрами, например:
+
+public class  GenericClassAndMethod {
+    public static void main(String[] args) {
+        Generelized<String> gen = new Generelized<>("Hello"); // У класса тип Т
+        System.out.println(gen.getT()); // Hello
+        System.out.println(gen.test(1)); // 1
+    }
+}
+
+class Generelized <T> {
+    T t;
+
+    public Generelized(T t) {
+        this.t = t;
+    }
+
+    public T getT() {
+        return t;
+    }
+
+    public <E> E test(E e) { // У метода тип Е
+        return e;
+    }
+}
+
+7. Внутри параметризованного класса нельзя создать экземпляры или массивы типа указанного в качестве параметра дженерика.
+
+8. Для параметризованных статических методов дженерик указывается пред типом возвращаемого значения.
+    public static <T> T getValue(Object obj) {
+        return (T) obj;
+    }
+
+9. Класс может быть дженерализовать типом <Т>, при этом методы класса могут быть дженирализованы как типом <Т>, так и отличным от него <E>. При вызове обычного метода ему нельзя передать в качестве аргумента тип отличный от типа, указанного при создании экземпляра дженирализованного класса. В статический метод можно передать как значение типа класса, так и отличное от него. Сам метод можно вызвать как на объекте, так и на самом классе.
+
+10. You can also substitute a type parameter (i.e., K or V) with a parameterized type (i.e., List<String>). For example, using the OrderedPair<K, V> example:
+        OrderedPair<String, Box<Integer>> p = new OrderedPair<>("primes", new Box<Integer>(...));
+
+11. При вызове статического парметризованного метода
+public class Util {
+    public static <K, V> boolean compare(Pair<K, V> p1, Pair<K, V> p2)
+
+    указывать тип возвращаемого значения в угловых скобках не обязательно: вместо Util.<Integer, String>compare(p1, p2) можно так: Util.compare(p1, p2)
+
+12. PECS. Допусти нужно скопировать элементы из одной коллекции в другую. producer это коллекция ИЗ которой копруются элементы, consumer - коллекция В которую коприуются

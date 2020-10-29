@@ -1,8 +1,5 @@
 package JavaMentor.Модуль_3_ОбъектыКлассы_и_Пакеты.АбстрактныеКлассы_и_Интерфейсы_3_5.Sandbox;
 
-import Stepik.SpamAnalyzer.Label;
-
-
 public class Task_3_5_7 {
 
     public static void main(String[] args) {

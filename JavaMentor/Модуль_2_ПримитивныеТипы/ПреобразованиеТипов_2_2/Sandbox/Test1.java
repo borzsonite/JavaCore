@@ -1,7 +1,5 @@
 package JavaMentor.Модуль_2_ПримитивныеТипы.ПреобразованиеТипов_2_2.Sandbox;
 
-import Theory.InnerClasses.Sandbox.Car;
-
 import static java.lang.Integer.parseInt;
 
 public class Test1 {

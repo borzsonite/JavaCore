@@ -1,7 +1,5 @@
 package JavaMentor.Модуль_5_ВводВыводДоступК_ФС.ДоступК_ФС_5_1.Sandbox;
 
-import Lesoson_38_1_Exceptions.ScanerException;
-
 import java.io.*;
 import java.nio.*;
 import java.util.*;

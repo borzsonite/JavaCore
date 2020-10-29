@@ -1,7 +1,5 @@
 package JavaMentor.Модуль_3_ОбъектыКлассы_и_Пакеты.ОбъявлениеКласса_3_3.Sandbox;
 
-import interfaces.Test;
-
 public class Test1 {
     int var1;
     int var2;

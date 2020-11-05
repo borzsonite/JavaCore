@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Test4 {
     public static void main(String[] args) {
-        Child c = new Child();
+        Child1 c = new Child1();
         c.getValue();
         Parent p = c;
         p.getValue();
@@ -17,7 +17,7 @@ class Parent {
     }
 }
 
-class Child extends Parent {
+class Child1 extends Parent {
     static public void getValue() {
         System.out.println("child");
     }

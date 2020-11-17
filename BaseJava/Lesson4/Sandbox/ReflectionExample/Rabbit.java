@@ -5,6 +5,7 @@ public class Rabbit {
    @RabbitAnnotation
    @Deprecated
    private String name;
+
    @Deprecated
    private int age;
 

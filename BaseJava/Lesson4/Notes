@@ -117,3 +117,44 @@ Start at 10.11.2020:6:28
     ИмяКласса.class;
 
 32. .getDeclaredFields() возвращает массив объектов типа Field. Унаследованые поля не включаются.
+
+33. Объект java.lang.Class является точкой входа для всех операций рефлексии. Для каждого типа объекта, JVM создает неизменяемый экземпляр java.lang.Class который предоставляет методы для получения свойств объекта, создания новых объектов, вызова методов.
+
+34. Если мы знаем название класса во время компиляции, то сможем получить объект следующим образом:
+    Class mClassObject = SomeObject.class
+
+35. Если мы не знаем имя во время компиляции, но знаем имя класса во время выполнения, то можно сделать так:
+    Class mClassObject = Class.forName("здесь имя класса")
+    При использовании метода Class.forName() мы должны указать полное имя класса.
+
+36. Мы можем получить доступ к модификаторам доступа с помощью Class объекта. Модификаторы представляют собой ключевые слова public, static, private и т.д. Мы можем получить модификаторы с помощью метода .getModifiers()
+
+37. Зная только класс мы можем получить информацию о пакете:
+Class mClassObject = SomeObject.class
+Package package = mClassObject.getPackage();
+
+38. Зная объект Class, мы можем получить доступ к его суперклассу:
+    Class mClassObject = SomeObject.class
+    Class superclass = mClassObject.getSuperclass();
+
+39. Список интерфейсов, реализуемых данным классом можно получить так:
+    Class mClassObject = SomeObject.class
+    Class[] interfaces = mClassObject.getInterfaces();
+
+40. Нам не нужно получать массив со всеми методами, если нам известны точные типы параметров метода, который мы хотим использовать. Например, у нас есть метод под названием «sayHello«, который принимает String в качестве параметра. Получить объект Method для него можно так:
+    Class mClassObject = SomeObject.class
+    Method method = mClassObject.getMethod("sayHello", new Class[]{String.class});
+Если метод sayHello() без параметров, то нужно передать null в методе getMethod():
+Method method = mClassObject.getMethod("sayHello", null);
+
+41. Если ожидаемый результат это исключение, задать это можно так:
+    @Test(expected = ArithmeticException.class)
+
+42. Запустить пачку тестов:
+
+    public static void main(String[] args) {
+        Result result = JUnitCore.runClasses(MyMathTest.class); // MyMathTest - файл с тестами, через запятую можно указать сразу несколько
+        for(Failure failure: result.getFailures()) {
+            System.out.println(failure.toString());
+        }
+        }

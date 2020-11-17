@@ -4,6 +4,7 @@ package BaseJava.Lesson4.Sandbox.ReflectionExample;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 public class ReflectionChecker {
 
@@ -39,12 +40,30 @@ public class ReflectionChecker {
         }
     }
 
-    void fillPrivateFields(Object object) {
+    void fillPrivateFields(Object object) throws IllegalAccessException {
         Class clazz = object.getClass();
         Field[] fields = clazz.getDeclaredFields();
         for(Field field: fields) {
             Annotation annotation = field.getAnnotation(RabbitAnnotation.class);
+            if(annotation == null) {
+                continue;
+            } else {
+                field.setAccessible(true);
+                field.set(object, "Hello");
+            }
+
         }
+    }
+
+    Object createNewObject(Object object) throws IllegalAccessException, InstantiationException {
+        Class clazz = object.getClass();
+        return clazz.newInstance();
+    }
+
+    void showModifiers(Object object) {
+        Class clazz = object.getClass();
+        int modifiers = clazz.getModifiers();
+        System.out.println(Modifier.isPublic(modifiers));
     }
 }
 

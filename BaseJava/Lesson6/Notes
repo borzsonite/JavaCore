@@ -7,4 +7,52 @@
    - В выражениях, в которых один или оба аргумента являются экземплярами классов-обёрток (кроме операции == и !=).
    - При передаче объекта класса-обёртки в метод, ожидающий соответствующий примитивный тип.
 
-3.    
+3. Iterator<T> позволяет итерироваться по колекциями. Метод iterator() возвращает объект типа Iterator c помощью которого можно обойти коллекцию.
+
+public class Main {
+  public static void main(String[] args) {
+
+    // Make a collection
+    ArrayList<String> cars = new ArrayList<String>();
+    cars.add("Volvo");
+    cars.add("BMW");
+    cars.add("Ford");
+    cars.add("Mazda");
+
+    // Get the iterator
+    Iterator<String> it = cars.iterator();
+
+    // Print the first item
+    System.out.println(it.next());
+
+    // Looping Through a Collection
+    while(it.hasNext()) {
+      System.out.println(it.next());
+
+    }
+  }
+}
+
+// удаление при помощи итератора
+public class IteratorExample {
+    public static void main(String[] args) {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        list.add(5);
+        list.add(6);
+
+        Iterator<Integer> iterator = list.iterator();
+        while(iterator.hasNext()) {
+                int i = iterator.next();
+                if (i==1) {
+                    iterator.remove();
+            }
+            System.out.println(list.toString());
+
+        }
+    }
+}
+

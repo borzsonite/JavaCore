@@ -10,6 +10,7 @@ public class FunctionalInterfaceExample {
         @Override
         public String convert(Integer from) {
             String result = String.valueOf(from);
+            return result;
         }
     };
 }

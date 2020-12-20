@@ -1,0 +1,16 @@
+1. Дженерики необходимы чтобы на стадии компиляции контролировать соответствие типов.
+
+2. Пример создания параметризованного класса
+
+    class GenericClass<T> {
+        T field;
+
+        public GenericClass(T field) {
+           this.field = field;
+        }
+
+}
+заместо Т при создании обеъекта может подставлятся любой сслылочный тип:
+
+GenericClass<Integer> genericClass = new GenericClass<>(5);
+

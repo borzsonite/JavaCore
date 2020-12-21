@@ -21,9 +21,7 @@ public class Test1 {
 }
 
 // пример создания параметризованного класса
-class GenericClass<T> implements Comparable<T> {
-    private static Object o1;
-    private static Object o2;
+class GenericClass<T extends Comparable<T>> implements Comparable<GenericClass<T>> {
     T field;
 
 //    public GenericClass(T field) {
@@ -43,7 +41,6 @@ class GenericClass<T> implements Comparable<T> {
         return o1.equals(o2);
     }
 
-
     public static void main(String[] args) {
         GenericClass<Integer> genericClass = new GenericClass<>(); // параметризуем класс Integer
         genericClass.setField(5);
@@ -51,17 +48,19 @@ class GenericClass<T> implements Comparable<T> {
         GenericClass<String> genericClass1 = new GenericClass<>(); // параметризуем класс String
         genericClass1.setField("Hello");
 
+        System.out.println(genericClass.getField());
+        System.out.println(genericClass1.getField());
+
         GenericClass<String> genericClass2 = new GenericClass<>();
         GenericClass<String> genericClass3 = new GenericClass<>();
         genericClass2.setField("hello");
         genericClass3.setField("hello");
         System.out.println(GenericClass.isEqual(genericClass2, genericClass3));
-
     }
 
     @Override
-    public int compareTo(T o) {
-        if (this.getField() == o.) {
+    public int compareTo(GenericClass<T> o) {
+        if (this.getField().equals(o.getField())) {
             return 0;
         } else {
             return -1;

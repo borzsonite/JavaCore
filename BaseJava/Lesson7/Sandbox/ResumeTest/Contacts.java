@@ -4,60 +4,68 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Contacts {
-    private Map<ContactType, String> contactsStorage = new TreeMap<>();
-
-    public void setPhone(String phone) {
-        contactsStorage.put(ContactType.PHONE, phone);
-    }
-
-    public void setSkype(String skype) {
-        contactsStorage.put(ContactType.SKYPE, skype);
-    }
-
-    public void setEmail(String email) {
-        contactsStorage.put(ContactType.EMAIL, email);
-    }
-
-    public void setLinkedIn(String linkedIn) {
-        contactsStorage.put(ContactType.LINKEDIN, linkedIn);
-    }
-
-    public void setGitHub(String gitHub) {
-        contactsStorage.put(ContactType.GITHUB, gitHub);
-    }
-
-    public void setStackOverflow(String stackOverflow) {
-        contactsStorage.put(ContactType.STACKOVERFLOW, stackOverflow);
-    }
-
-    public void setHomepage(String homepage) {
-        contactsStorage.put(ContactType.HOMEPAGE, homepage);
-    }
+    private String phone;
+    private String skype;
+    private String email;
+    private String linkedin;
+    private String github;
+    private String stackoverflow;
+    private String homepage;
 
     public String getPhone() {
-        return contactsStorage.get(ContactType.PHONE);
+        return phone;
+    }
+
+    public String setPhone(String phone) {
+        this.phone = phone;
+        return phone;
     }
 
     public String getSkype() {
-        return contactsStorage.get(ContactType.SKYPE);
+        return skype;
+    }
+
+    public void setSkype(String skype) {
+        this.skype = skype;
     }
 
     public String getEmail() {
-        return contactsStorage.get(ContactType.EMAIL);
+        return email;
     }
 
-    public String getLinkedIn() {
-        return contactsStorage.get(ContactType.LINKEDIN);
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getGitHub() {
-        return contactsStorage.get(ContactType.GITHUB);
+    public String getLinkedin() {
+        return linkedin;
     }
 
-    public String getStackOverflow() {
-        return contactsStorage.get(ContactType.STACKOVERFLOW);
+    public void setLinkedin(String linkedin) {
+        this.linkedin = linkedin;
+    }
+
+    public String getGithub() {
+        return github;
+    }
+
+    public void setGithub(String github) {
+        this.github = github;
+    }
+
+    public String getStackoverflow() {
+        return stackoverflow;
+    }
+
+    public void setStackoverflow(String stackoverflow) {
+        this.stackoverflow = stackoverflow;
     }
 
     public String getHomepage() {
-        return contactsStorage.get(ContactType.HOMEPAGE);
-    }}
+        return homepage;
+    }
+
+    public void setHomepage(String homepage) {
+        this.homepage = homepage;
+    }
+}

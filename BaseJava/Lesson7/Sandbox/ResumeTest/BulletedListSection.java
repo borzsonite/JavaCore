@@ -7,4 +7,9 @@ public class BulletedListSection extends  AbstractSection<ArrayList<String>>{
     protected void setContent(ArrayList<String> content) {
 
     }
+
+    @Override
+    protected ArrayList<String> getContent(ArrayList<String> content) {
+        return null;
+    }
 }

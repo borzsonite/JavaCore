@@ -1,4 +1,4 @@
-package BaseJava.Lesson11_2.Sandbox;
+package BaseJava.Lesson11.Sandbox;
 
 public class Test0 {
     public static void main(String[] args) throws InterruptedException {

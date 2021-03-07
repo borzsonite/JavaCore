@@ -12,22 +12,30 @@ public class Test2 {
 
     }
 
+    public synchronized void increment() {
+        counter++;
+    }
+
     public void doWork() throws InterruptedException {
         Thread myThread1 = new Thread(() -> {
             for(int i=0; i<10000; i++) {
-                counter++;
+                 //counter++;
+                increment();
             }
         });
 
         Thread myThread2 = new Thread(() -> {
             for(int i=0; i<10000; i++) {
-                counter++;
+               // counter++;
+                increment();
             }
         });
 
         myThread1.start();
-        myThread1.join();
+        // myThread1.join();
         myThread2.start();
+        // myThread2.join();
+       // myThread1.join();
         myThread2.join();
 
         System.out.println(counter);

@@ -9,11 +9,16 @@ public class Test2 {
     public static void main(String[] args) throws InterruptedException {
         Test2 test2 = new Test2();
         test2.doWork();
-
     }
 
     public synchronized void increment() {
         counter++;
+    }
+
+    public void increment2() {
+        synchronized (this) {
+            counter++;
+        }
     }
 
     public void doWork() throws InterruptedException {
@@ -32,10 +37,8 @@ public class Test2 {
         });
 
         myThread1.start();
-        // myThread1.join();
         myThread2.start();
-        // myThread2.join();
-       // myThread1.join();
+        myThread1.join();
         myThread2.join();
 
         System.out.println(counter);

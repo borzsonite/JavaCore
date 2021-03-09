@@ -18,3 +18,11 @@
                 list1.add(random.nextInt(100));
             }
         }
+
+7. Алгоритм создания пула потоков:
+    1 создаем пул: ExecutorService executorService = Executors.newFixedThreadPool(2)
+    2 принимаем задание: executorService.submit(Экземпляр runnable, c переопределенным методом run() в котором содержится задача)
+    3 завершаем прием заданий и стартуем выполнение принятых: executorService.shutdown();
+    4 устанавливаем время в течении которого основной поток будет ожидать выполнения заданий: executorService.awaitTermination(1, TimeUnit.DAYS); // здесь на один день
+
+7.

@@ -34,7 +34,7 @@ class Task {
     public void thirstThread() {
         lock.lock();
         increment();
-        lock.unlock();
+       lock.unlock();
     }
 
     public void secondThread() {

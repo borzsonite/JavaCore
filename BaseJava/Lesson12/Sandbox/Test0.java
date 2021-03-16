@@ -1,9 +1,10 @@
 package BaseJava.Lesson12.Sandbox;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -53,6 +54,11 @@ public class Test0 {
             n = 10 * n + d;
         }
         System.out.println(n);
+
+         Integer numbers = Arrays.asList(1, 2, 3, 4)
+                 .stream()
+                 .collect(Collectors.summingInt(((p) -> p % 2 == 1? p: 0)));
+        System.out.println(numbers);
 
 
     }
